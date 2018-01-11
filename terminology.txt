@@ -1,0 +1,49 @@
+URI - a string of characters used to identify a resource. E.g /users
+
+Resource -
+Any object that you want users to be able to access via URI and perform CRUD (or some subset thereof) operations on can be thought of as a resource. In the Rails sense, it is generally a database table which is represented by a model, and acted on through a controller.
+
+For example, you might have a User resource (with a users table in your DB). This is represented by a User model, is mapped to users_controller with map.resources :users (which then generates routes like /users (a collection of User resources) and /users/1 (a specific User resource).
+
+You act upon those resources by using the appropriate HTTP method when making calls to those resources. POST to the resource collection (/users) creates a new record; GET retrieves a list of resources (/users) or a specific user (/users/1). PUT updates a specific user (/users/1/), and DELETE destroys that user. The URLs are the same, but the result (and controller action) may be different based on the HTTP verb. The idea, though is that /users/1 always means "I'm interacting with the User that has ID #1", regardless of the action.
+
+(Non-resourceful) Route -
+A (non-resourceful) route maps a arbitrary url(request) to action in a single controller.
+
+Resource route -
+A resource route maps a number of related requests to actions in a single controller.
+
+MVC -
+<Source: https://betterexplained.com/articles/intermediate-rails-understanding-models-views-and-controllers/>
+
+Browser -
+The browser makes a request, such as http://mysite.com/video/show/15
+
+Web Server -
+The web server (mongrel, WEBrick, etc.) receives the request. It uses routes to find out which controller to use: the default route pattern is “/controller/action/id” as defined in config/routes.rb. In our case, it’s the “video” controller, method “show”, with the id parameter set to “15″. The web server then uses the dispatcher to create a new controller, call the action and pass the parameters.
+
+Controller -
+Controllers do the work of parsing user requests, data submissions, cookies, sessions and the “browser stuff”. They’re the pointy-haired manager that orders employees around. The best controller is Dilbert-esque: It gives orders without knowing (or caring) how it gets done. In our case, the show method in the video controller knows it needs to lookup a video. It asks the model to get video 15, and will eventually display it to the user.
+
+Models -
+Models are Ruby classes. They talk to the database, store and validate data, perform the business logic and otherwise do the heavy lifting. They’re the chubby guy in the back room crunching the numbers. In this case, the model retrieves video 15 from the database.
+
+Views -
+Views are what the user sees: HTML, CSS, XML, Javascript, JSON. They’re the sales rep putting up flyers and collecting surveys, at the manager’s direction. Views are merely puppets reading what the controller gives them. They don’t know what happens in the back room. In our example, the controller gives video 15 to the “show” view. The show view generates the HTML: divs, tables, text, descriptions, footers, etc.
+
+Controller -
+The controller returns the response body (HTML, XML, etc.) & metadata (caching headers, redirects) to the server. The server combines the raw data into a proper HTTP response and sends it to the user.
+
+
+
+Naming Conventions -
+Controller	Plural	  rails g controller Users index show
+Helper	    Plural	  rails g helper Users
+Mailer	    Singular	rails g mailer UserMailer
+Migration	  Plural	  rails g migration AddEmailToUsers email:string
+Model	      Singular	rails g model User name:string
+Observer	  Singular	rails g observer User
+Resource	  Plural*	  resources :users, :only => [:index, :show]
+Scaffold	  Singular	rails g scaffold User name:string
+Table	      Plural	  SELECT * FROM users;
+View	      N/A	      app/views/users/index.html.erb – comprised of controller (plural) and action (singular)

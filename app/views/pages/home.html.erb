@@ -42,7 +42,12 @@
           <footer class="blockquote-footer">Steve Jobs</footer>
         </blockquote>
       </div>
+        <p class='text-center' style='color: red;'>
+          <%= ViewCounter.where(name: 'home').count %>
+        </p>
     </div>
+
+
 
     <!-- About Me -->
     <div class='about-me row pt'>

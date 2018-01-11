@@ -1,6 +1,11 @@
 class PagesController < ApplicationController
 
-  def home; end
+  def home
+    ViewCounter.create(name: 'home')
+  end
 
-  def contactme; end
+  def contactme
+    ViewCounter.create(name: 'contactme')
+  end
+
 end
